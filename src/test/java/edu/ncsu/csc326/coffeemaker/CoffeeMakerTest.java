@@ -43,6 +43,30 @@ public class CoffeeMakerTest {
     private Recipe recipe2;
     private Recipe recipe3;
     private Recipe recipe4;
+    private Recipe recipe5;
+
+    /**
+     * Return a valid Recipe object
+     *
+     * @param name
+     * @param chocolate
+     * @param coffee
+     * @param milk
+     * @param sugar
+     * @param price
+     * @throws RecipeException if there was an error parsing the ingredient
+     *                         amount when setting up the recipe.
+     */
+    private Recipe createRecipe(String name, String chocolate, String coffee, String milk, String sugar, String price) throws RecipeException {
+        Recipe newRecipe = new Recipe();
+        newRecipe.setName(name);
+        newRecipe.setAmtChocolate(chocolate);
+        newRecipe.setAmtCoffee(coffee);
+        newRecipe.setAmtMilk(milk);
+        newRecipe.setAmtSugar(sugar);
+        newRecipe.setPrice(price);
+        return newRecipe;
+    }
 
     /**
      * Initializes some recipes to test with and the {@link CoffeeMaker}
@@ -55,41 +79,11 @@ public class CoffeeMakerTest {
     public void setUp() throws RecipeException {
         coffeeMaker = new CoffeeMaker();
 
-        //Set up for r1
-        recipe1 = new Recipe();
-        recipe1.setName("Coffee");
-        recipe1.setAmtChocolate("0");
-        recipe1.setAmtCoffee("3");
-        recipe1.setAmtMilk("1");
-        recipe1.setAmtSugar("1");
-        recipe1.setPrice("50");
-
-        //Set up for r2
-        recipe2 = new Recipe();
-        recipe2.setName("Mocha");
-        recipe2.setAmtChocolate("20");
-        recipe2.setAmtCoffee("3");
-        recipe2.setAmtMilk("1");
-        recipe2.setAmtSugar("1");
-        recipe2.setPrice("75");
-
-        //Set up for r3
-        recipe3 = new Recipe();
-        recipe3.setName("Latte");
-        recipe3.setAmtChocolate("0");
-        recipe3.setAmtCoffee("3");
-        recipe3.setAmtMilk("3");
-        recipe3.setAmtSugar("1");
-        recipe3.setPrice("100");
-
-        //Set up for r4
-        recipe4 = new Recipe();
-        recipe4.setName("Hot Chocolate");
-        recipe4.setAmtChocolate("4");
-        recipe4.setAmtCoffee("0");
-        recipe4.setAmtMilk("1");
-        recipe4.setAmtSugar("1");
-        recipe4.setPrice("65");
+        recipe1 = createRecipe("Coffee", "0", "3", "1", "1", "50");
+        recipe2 = createRecipe("Mocha", "20", "3", "1", "1", "75");
+        recipe3 = createRecipe("Latte", "0", "3", "3", "1", "100");
+        recipe4 = createRecipe("Hot Chocolate", "4", "0", "1", "1", "65");
+        recipe5 = createRecipe("Lot of Ingredients", "0", "0", "0", "0", "50");
     }
 
     /**
@@ -196,7 +190,6 @@ public class CoffeeMakerTest {
         coffeeMaker.addInventory("-4", "-3", "-2", "-1");
     }
 
-
     /**
      * Given a coffee maker with the default inventory
      * When we add inventory with same quantities
@@ -247,12 +240,21 @@ public class CoffeeMakerTest {
      * Given a coffee maker with a valid recipe
      * When we try to purchase beverage that not enough inventory
      * Then we got the money back.
+     *
+     * @throws RecipeException if there was an error parsing the ingredient
+     *                         amount when setting up the recipe.
      */
     @Test
-    public void testPurchaseBeverageWhenNotEnoughInventory() {
-        assertTrue(coffeeMaker.addRecipe(recipe2));
-        //recipe2 require 20 chocolate but the default chocolate in an inventory is 15
-        assertEquals(80, coffeeMaker.makeCoffee(1, 80));
+    public void testPurchaseBeverageWhenNotEnoughInventory() throws RecipeException {
+        assertTrue(coffeeMaker.addRecipe(recipe5));
+        recipe5.setAmtCoffee("100");
+        assertEquals(1000, coffeeMaker.makeCoffee(0, 1000));
+        recipe5.setAmtMilk("100");
+        assertEquals(1000, coffeeMaker.makeCoffee(0, 1000));
+        recipe5.setAmtSugar("100");
+        assertEquals(1000, coffeeMaker.makeCoffee(0, 1000));
+        recipe5.setAmtChocolate("100");
+        assertEquals(1000, coffeeMaker.makeCoffee(0, 1000));
     }
 
     /**
@@ -265,5 +267,16 @@ public class CoffeeMakerTest {
         assertTrue(coffeeMaker.addRecipe(recipe1));
         assertEquals(25, coffeeMaker.makeCoffee(0, 25));
         assertEquals(50, coffeeMaker.makeCoffee(0, 100));
+    }
+
+    /**
+     * Given a coffee maker with a valid recipe
+     * When we try to purchase beverage that not in a recipe book
+     * Then we got the money back.
+     */
+    @Test
+    public void testPurchaseBeverageInvalidRecipe() {
+        assertTrue(coffeeMaker.addRecipe(recipe1));
+        assertEquals(100, coffeeMaker.makeCoffee(1, 100));
     }
 }

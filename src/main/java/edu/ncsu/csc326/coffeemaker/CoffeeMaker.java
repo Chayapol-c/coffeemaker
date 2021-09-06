@@ -92,7 +92,7 @@ public class CoffeeMaker {
     /**
      * Returns the change of a user's beverage purchase, or
      * the user's money if the beverage cannot be made
-     * @param r
+     * @param jr
      * @param amtPaid
      * @return int
      */
