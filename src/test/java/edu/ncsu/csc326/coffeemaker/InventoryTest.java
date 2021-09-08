@@ -54,7 +54,7 @@ public class InventoryTest {
      * @throws InventoryException if there was an error parsing the quantity
      *                            to a positive integer.
      */
-    @Test
+    @Test(expected = InventoryException.class)
     public void testAddChocolateInvalid() throws InventoryException {
         inventory.addChocolate("abcd");
         inventory.addChocolate("-abcd");
