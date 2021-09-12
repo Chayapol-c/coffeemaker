@@ -23,7 +23,10 @@ import org.junit.Test;
 
 import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
 import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
+<<<<<<< Updated upstream
 import org.mockito.Mock;
+=======
+>>>>>>> Stashed changes
 import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
@@ -41,15 +44,24 @@ public class CoffeeMakerTest {
      */
     private CoffeeMaker coffeeMaker;
     private CoffeeMaker coffeeMakerMock;
+<<<<<<< Updated upstream
     // Sample recipes to use in testing.
+=======
+>>>>>>> Stashed changes
     private Recipe recipe1;
     private Recipe recipe2;
     private Recipe recipe3;
     private Recipe recipe4;
     private Recipe recipe5;
+<<<<<<< Updated upstream
     private Inventory inventory;
     private RecipeBook recipeBook;
     private Recipe[] recipes;
+=======
+    private RecipeBook recipeBook;
+    private Recipe[] recipes;
+
+>>>>>>> Stashed changes
     /**
      * Return a valid Recipe object
      *
@@ -84,7 +96,11 @@ public class CoffeeMakerTest {
     public void setUp() throws RecipeException {
         coffeeMaker = new CoffeeMaker();
         recipeBook = Mockito.mock(RecipeBook.class);
+<<<<<<< Updated upstream
         inventory = new Inventory();
+=======
+        Inventory inventory = new Inventory();
+>>>>>>> Stashed changes
         coffeeMakerMock = new CoffeeMaker(recipeBook, inventory);
 
         recipe1 = createRecipe("Coffee", "0", "3", "1", "1", "50");
@@ -93,7 +109,11 @@ public class CoffeeMakerTest {
         recipe4 = createRecipe("Hot Chocolate", "4", "0", "1", "1", "65");
         recipe5 = createRecipe("Lot of Ingredients", "0", "0", "0", "0", "50");
 
+<<<<<<< Updated upstream
         recipes = new Recipe[] {recipe1, recipe2, recipe3};
+=======
+        recipes = new Recipe[]{recipe1, recipe2, recipe3};
+>>>>>>> Stashed changes
     }
 
     /**
@@ -244,6 +264,10 @@ public class CoffeeMakerTest {
     public void testPurchaseBeverage() {
         assertTrue(coffeeMaker.addRecipe(recipe1));
         assertEquals(25, coffeeMaker.makeCoffee(0, 75));
+
+        when(recipeBook.getRecipes()).thenReturn(recipes);
+        assertEquals(10, coffeeMakerMock.makeCoffee(0, 60));
+        verify(recipeBook, times(4)).getRecipes();
     }
 
     /**
@@ -265,6 +289,10 @@ public class CoffeeMakerTest {
         assertEquals(1000, coffeeMaker.makeCoffee(0, 1000));
         recipe5.setAmtChocolate("100");
         assertEquals(1000, coffeeMaker.makeCoffee(0, 1000));
+
+        when(recipeBook.getRecipes()).thenReturn(recipes);
+        assertEquals(100, coffeeMakerMock.makeCoffee(1, 100));
+        verify(recipeBook, times(3)).getRecipes();
     }
 
     /**
@@ -277,6 +305,10 @@ public class CoffeeMakerTest {
         assertTrue(coffeeMaker.addRecipe(recipe1));
         assertEquals(25, coffeeMaker.makeCoffee(0, 25));
         assertEquals(50, coffeeMaker.makeCoffee(0, 100));
+
+        when(recipeBook.getRecipes()).thenReturn(recipes);
+        assertEquals(20, coffeeMakerMock.makeCoffee(0, 20));
+        verify(recipeBook, times(2)).getRecipes();
     }
 
     /**
@@ -288,38 +320,9 @@ public class CoffeeMakerTest {
     public void testPurchaseBeverageInvalidRecipe() {
         assertTrue(coffeeMaker.addRecipe(recipe1));
         assertEquals(100, coffeeMaker.makeCoffee(1, 100));
-    }
 
-    /**
-     * Given a mock coffee maker with a valid recipe
-     * When we try to purchase beverage
-     * Then we got the money back.
-     */
-    @Test
-    public void testMock4(){
-        when(recipeBook.getRecipes()).thenReturn(recipes);
-        assertEquals(10, coffeeMakerMock.makeCoffee(0,60));
-        verify(recipeBook, times(4)).getRecipes();
-    }
-
-    @Test
-    public void testMock2(){
-        when(recipeBook.getRecipes()).thenReturn(recipes);
-        assertEquals(20, coffeeMakerMock.makeCoffee(0,20));
-        verify(recipeBook, times(2)).getRecipes();
-    }
-
-    @Test
-    public void testMock1(){
         when(recipeBook.getRecipes()).thenReturn(new Recipe[]{null});
         assertEquals(50, coffeeMakerMock.makeCoffee(0, 50));
         verify(recipeBook, times(1)).getRecipes();
-    }
-
-    @Test
-    public void testMock3(){
-        when(recipeBook.getRecipes()).thenReturn(recipes);
-        assertEquals(100, coffeeMakerMock.makeCoffee(1,100));
-        verify(recipeBook, times(3)).getRecipes();
     }
 }
