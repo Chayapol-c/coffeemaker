@@ -23,10 +23,6 @@ import org.junit.Test;
 
 import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
 import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
-<<<<<<< Updated upstream
-import org.mockito.Mock;
-=======
->>>>>>> Stashed changes
 import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
@@ -44,24 +40,14 @@ public class CoffeeMakerTest {
      */
     private CoffeeMaker coffeeMaker;
     private CoffeeMaker coffeeMakerMock;
-<<<<<<< Updated upstream
-    // Sample recipes to use in testing.
-=======
->>>>>>> Stashed changes
     private Recipe recipe1;
     private Recipe recipe2;
     private Recipe recipe3;
     private Recipe recipe4;
     private Recipe recipe5;
-<<<<<<< Updated upstream
-    private Inventory inventory;
-    private RecipeBook recipeBook;
-    private Recipe[] recipes;
-=======
     private RecipeBook recipeBook;
     private Recipe[] recipes;
 
->>>>>>> Stashed changes
     /**
      * Return a valid Recipe object
      *
@@ -96,11 +82,7 @@ public class CoffeeMakerTest {
     public void setUp() throws RecipeException {
         coffeeMaker = new CoffeeMaker();
         recipeBook = Mockito.mock(RecipeBook.class);
-<<<<<<< Updated upstream
-        inventory = new Inventory();
-=======
         Inventory inventory = new Inventory();
->>>>>>> Stashed changes
         coffeeMakerMock = new CoffeeMaker(recipeBook, inventory);
 
         recipe1 = createRecipe("Coffee", "0", "3", "1", "1", "50");
@@ -109,11 +91,7 @@ public class CoffeeMakerTest {
         recipe4 = createRecipe("Hot Chocolate", "4", "0", "1", "1", "65");
         recipe5 = createRecipe("Lot of Ingredients", "0", "0", "0", "0", "50");
 
-<<<<<<< Updated upstream
-        recipes = new Recipe[] {recipe1, recipe2, recipe3};
-=======
         recipes = new Recipe[]{recipe1, recipe2, recipe3};
->>>>>>> Stashed changes
     }
 
     /**
