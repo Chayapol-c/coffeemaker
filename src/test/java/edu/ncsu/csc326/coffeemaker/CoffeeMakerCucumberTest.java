@@ -38,17 +38,31 @@ public class CoffeeMakerCucumberTest {
     }
 
     @Given("The Coffee Maker waits for user input.")
-    public void theCoffeeMakerWaitsForUserInput() throws RecipeException {
+    public void theCoffeeMakerWaitsForUserInput(){
         coffeeMaker = new CoffeeMaker();
+    }
+
+    @Given("The Coffee Maker has {int} valid recipes.")
+    public void theCoffeeMakerHasValidRecipes(int recipeAmount) throws RecipeException{
         coffeeMaker.addRecipe(createRecipe("Coffee", "0", "3", "1", "1", "50"));
         coffeeMaker.addRecipe(createRecipe("Mocha", "20", "3", "1", "1", "75"));
         coffeeMaker.addRecipe(createRecipe("Latte", "0", "3", "3", "1", "100"));
+        int validRecipe = 0;
+        for (Recipe recipe : coffeeMaker.getRecipes()) {
+            if (recipe != null) {
+                validRecipe++;
+            }
+        }
+        assertEquals(recipeAmount, validRecipe);
     }
 
-    @When("I want to purchase beverage number {int} that cost {int}")
-    public void iWantToPurchaseBeverageNumberThatCost(int number, int amount) {
-        if (number < 4){
+    @When("I want to purchase beverage number {int}")
+    public void iWantToPurchaseBeverageNumberThatCost(int number) {
+        if (number < 4) {
             recipeNumber = number - 1;
+        }
+        else{
+            recipeNumber = -1;
         }
     }
 
@@ -59,7 +73,8 @@ public class CoffeeMakerCucumberTest {
 
     @Then("I get money back {int}")
     public void iGetMoneyBack(int amount) {
-        int beverageCost = coffeeMaker.getRecipes()[recipeNumber].getPrice();
+        int beverageCost = 0;
+        beverageCost = coffeeMaker.getRecipes()[recipeNumber].getPrice();
         if (paidAmount < beverageCost) {
             assertEquals(paidAmount, coffeeMaker.makeCoffee(recipeNumber, paidAmount));
         } else {
@@ -68,6 +83,7 @@ public class CoffeeMakerCucumberTest {
 
 
     }
+
 
 
 }
